@@ -1,5 +1,10 @@
 #pragma once
-
+#include "winrt/base.h"
+namespace winrt::impl
+{
+    template <typename Async>
+    auto wait_for(Async const& async, Windows::Foundation::TimeSpan const& timeout);
+}
 #include <napi.h>
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>

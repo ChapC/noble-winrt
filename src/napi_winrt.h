@@ -1,7 +1,13 @@
 #pragma once
 
-#include <napi.h>
+
 #include "winrt/base.h"
+namespace winrt::impl
+{
+    template <typename Async>
+    auto wait_for(Async const& async, Windows::Foundation::TimeSpan const& timeout);
+}
+#include <napi.h>
 #include "peripheral.h"
 
 std::vector<winrt::guid> getUuidArray(const Napi::Value& value);
