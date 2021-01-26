@@ -317,12 +317,14 @@ void BLEManager::OnServicesDiscovered(IAsyncOperation<GattDeviceServicesResult> 
         const GattDeviceServicesResult& result = asyncOp.GetResults();
         if(CHECK_RESULT(result))
         {
+            PeripheralWinrt& peripheral = mDeviceMap[uuid];
             FOR(service, result.Services())
             {
                 auto id = service.Uuid();
                 if (inFilter(serviceUUIDs, id))
                 {
                     serviceUuids.push_back(toStr(id));
+                    peripheral.AddServiceToCache(service);
                 }
             }
         }
@@ -407,7 +409,7 @@ bool BLEManager::DiscoverCharacteristics(const std::string& uuid, const winrt::g
                 std::string serviceId = toStr(serviceUuid);
                 //service->GetCharacteristicsAsync(BluetoothCacheMode::Uncached).Completed(bind2(this, &BLEManager::OnCharacteristicsDiscovered, uuid, serviceId, characteristicUUIDs));
 
-                auto completed = bind2(this, &BLEManager::OnCharacteristicsDiscovered, uuid, serviceId, characteristicUUIDs);
+                auto completed = bind2(this, &BLEManager::OnCharacteristicsDiscovered, uuid, serviceUuid, characteristicUUIDs);
                 if (characteristicUUIDs.empty() || characteristicUUIDs.size() > 1) { 
                     service->GetCharacteristicsAsync(BluetoothCacheMode::Uncached).Completed(completed);
                 } else if (characteristicUUIDs.size() == 1) {
@@ -426,7 +428,7 @@ bool BLEManager::DiscoverCharacteristics(const std::string& uuid, const winrt::g
 
 void BLEManager::OnCharacteristicsDiscovered(IAsyncOperation<GattCharacteristicsResult> asyncOp,
                                              AsyncStatus status, const std::string uuid,
-                                             const std::string serviceId,
+                                             const winrt::guid serviceUuid,
                                              const std::vector<winrt::guid> characteristicUUIDs)
 {
     std::vector<std::pair<std::string, std::vector<std::string>>> characteristicsUuids;
@@ -435,6 +437,7 @@ void BLEManager::OnCharacteristicsDiscovered(IAsyncOperation<GattCharacteristics
         const auto& result = asyncOp.GetResults();
         if(CHECK_RESULT(result))
         {
+            PeripheralWinrt& peripheral = mDeviceMap[uuid];
             FOR(characteristic, result.Characteristics())
             {
                 auto id = characteristic.Uuid();
@@ -442,6 +445,7 @@ void BLEManager::OnCharacteristicsDiscovered(IAsyncOperation<GattCharacteristics
                 {
                     auto props = characteristic.CharacteristicProperties();
                     characteristicsUuids.push_back({ toStr(id), toPropertyArray(props) });
+                    peripheral.AddCharacteristicToCache(serviceUuid, characteristic);
                 }
             }
         }
@@ -455,7 +459,7 @@ void BLEManager::OnCharacteristicsDiscovered(IAsyncOperation<GattCharacteristics
         LOGE("AsyncStatus status: %d", status);
     }
 
-    mEmit.CharacteristicsDiscovered(uuid, serviceId, characteristicsUuids);
+    mEmit.CharacteristicsDiscovered(uuid, toStr(serviceUuid), characteristicsUuids);
 }
 
 bool BLEManager::Read(const std::string& uuid, const winrt::guid& serviceUuid,

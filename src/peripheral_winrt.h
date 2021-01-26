@@ -59,6 +59,8 @@ public:
                     std::function<void(std::optional<GattDeviceService>)> callback);
     void GetCharacteristic(winrt::guid serviceUuid, winrt::guid characteristicUuid,
                            std::function<void(std::optional<GattCharacteristic>)> callback);
+    void AddCharacteristicToCache(winrt::guid serviceUuid, GattCharacteristic characteristic);
+    void AddServiceToCache(GattDeviceService service);
     void GetDescriptor(winrt::guid serviceUuid, winrt::guid characteristicUuid,
                        winrt::guid descriptorUuid,
                        std::function<void(std::optional<GattDescriptor>)> callback);

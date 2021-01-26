@@ -128,6 +128,10 @@ void PeripheralWinrt::GetServiceFromDevice(
     }
 }
 
+void PeripheralWinrt::AddServiceToCache(GattDeviceService service) {
+    cachedServices.insert(std::make_pair(service.Uuid(), CachedService(service)));
+}
+
 void PeripheralWinrt::GetService(winrt::guid serviceUuid,
                                  std::function<void(std::optional<GattDeviceService>)> callback)
 {
@@ -142,26 +146,33 @@ void PeripheralWinrt::GetService(winrt::guid serviceUuid,
     }
 }
 
+void PeripheralWinrt::AddCharacteristicToCache(winrt::guid serviceUuid, GattCharacteristic characteristic) {
+    auto it = cachedServices.find(serviceUuid);
+    if (it != cachedServices.end())
+    {
+        CachedService& cachedService = cachedServices[serviceUuid];
+        cachedService.characterisitics.insert(std::make_pair(characteristic.Uuid(), CachedCharacteristic(characteristic)));
+    }
+}
+
 void PeripheralWinrt::GetCharacteristicFromService(
     GattDeviceService service, winrt::guid characteristicUuid,
     std::function<void(std::optional<GattCharacteristic>)> callback)
 {
+    printf("PeripheralWinrt::GetCharacteristicFromService - cached mode\n");
     service.GetCharacteristicsForUuidAsync(characteristicUuid, BluetoothCacheMode::Cached)
         .Completed([=](IAsyncOperation<GattCharacteristicsResult> result, auto& status) {
             if (status == AsyncStatus::Completed)
             {
-                printf("Got GetCharacteristicFromService uncached\n");
                 const auto& characteristics = result.GetResults();
                 const auto& characteristic = characteristics.Characteristics().First();
                 if (characteristic.HasCurrent())
                 {
-                    printf("in hascurrent\n");
                     winrt::guid serviceUuid = service.Uuid();
                     CachedService& cachedService = cachedServices[serviceUuid];
                     const GattCharacteristic& c = characteristic.Current();
                     cachedService.characterisitics.insert(
                         std::make_pair(c.Uuid(), CachedCharacteristic(c)));
-                    printf("doing callback\n");
                     callback(c);
                 }
                 else
