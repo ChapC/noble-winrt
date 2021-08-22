@@ -92,8 +92,7 @@ BLEManager::BLEManager(const Napi::Value& receiver, const Napi::Function& callba
     mEmit.Wrap(receiver, callback);
     auto onRadio = std::bind(&BLEManager::OnRadio, this, std::placeholders::_1);
     mWatcher.Start(onRadio);
-    // mAdvertismentWatcher.ScanningMode(BluetoothLEScanningMode::Active);
-    mAdvertismentWatcher.ScanningMode(BluetoothLEScanningMode::Passive);
+    mAdvertismentWatcher.ScanningMode(BluetoothLEScanningMode::Active);
     auto onReceived  = bind2(this, &BLEManager::OnScanResult);
     mReceivedRevoker = mAdvertismentWatcher.Received(winrt::auto_revoke, onReceived);
     auto onStopped   = bind2(this, &BLEManager::OnScanStopped);

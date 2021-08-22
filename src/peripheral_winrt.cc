@@ -35,14 +35,12 @@ PeripheralWinrt::~PeripheralWinrt()
 void PeripheralWinrt::Update(const int rssiValue, const BluetoothLEAdvertisement& advertisment, const BluetoothLEAdvertisementType& advertismentType)
 {
     std::string localName = ws2s(advertisment.LocalName().c_str());
-    // printf("CHECKING NAME ::UPDATE: %s \n", localName.c_str());
 
     if (!localName.empty())
     {
-        // printf("NAME IS NOT EMPTY\n");
+        //printf("Found name %s\n", localName.c_str());
         name = localName;
     } else {
-        // printf("NAME IS EMPTY\n");
         name = "UNKNOWN " + address;
     }
 
