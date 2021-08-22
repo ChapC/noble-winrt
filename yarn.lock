@@ -14,6 +14,7 @@
     "usb" "^1.6.2"
 
 "@abandonware/noble@git+https://github.com/abandonware/noble.git":
+  "integrity" "sha512-2SxvryAfdhaiuw4ltCvJTHA0s3DX56BXCVdx8zAEwtCsI/yE4A/J04QDxeguhPsqil+pQTHKEVY5UulVmvm4vw=="
   "resolved" "git+ssh://git@github.com/abandonware/noble.git#faf81280bda6c7d39d7c8e92a6562d860fbe0f9e"
   "version" "1.9.2-9"
   dependencies:
@@ -370,6 +371,11 @@
   "resolved" "https://registry.npmjs.org/node-addon-api/-/node-addon-api-3.0.2.tgz"
   "version" "3.0.2"
 
+"node-gyp-build@^4.2.3":
+  "integrity" "sha512-MN6ZpzmfNCRM+3t57PTJHgHyw/h4OWnZ6mR8P5j/uZtqQr46RRuDE/P+g3n0YR/AiYXeWixZZzaip77gdICfRg=="
+  "resolved" "https://registry.npmjs.org/node-gyp-build/-/node-gyp-build-4.2.3.tgz"
+  "version" "4.2.3"
+
 "node-pre-gyp@^0.14.0":
   "integrity" "sha512-+CvDC7ZttU/sSt9rFjix/P05iS43qHCOOGzcr3Ry99bXG7VX953+vFyEuph/tfqoYu8dttBkE86JSKBO2OzcxA=="
   "resolved" "https://registry.npmjs.org/node-pre-gyp/-/node-pre-gyp-0.14.0.tgz"
@@ -474,27 +480,6 @@
   "integrity" "sha512-s8Aai8++QQGi4sSbs/M1Qku62PFK49Jm1CbgXklGz4nmHveDq0wzJkg7Na5QbnO1uNH8K7iqx2EQ/mV0MZEmOg=="
   "resolved" "https://registry.npmjs.org/prebuild-install/-/prebuild-install-5.3.6.tgz"
   "version" "5.3.6"
-  dependencies:
-    "detect-libc" "^1.0.3"
-    "expand-template" "^2.0.3"
-    "github-from-package" "0.0.0"
-    "minimist" "^1.2.3"
-    "mkdirp-classic" "^0.5.3"
-    "napi-build-utils" "^1.0.1"
-    "node-abi" "^2.7.0"
-    "noop-logger" "^0.1.1"
-    "npmlog" "^4.0.1"
-    "pump" "^3.0.0"
-    "rc" "^1.2.7"
-    "simple-get" "^3.0.3"
-    "tar-fs" "^2.0.0"
-    "tunnel-agent" "^0.6.0"
-    "which-pm-runs" "^1.0.0"
-
-"prebuild-install@^6.0.0":
-  "integrity" "sha512-h2ZJ1PXHKWZpp1caLw0oX9sagVpL2YTk+ZwInQbQ3QqNd4J03O6MpFNmMTJlkfgPENWqe5kP0WjQLqz5OjLfsw=="
-  "resolved" "https://registry.npmjs.org/prebuild-install/-/prebuild-install-6.0.0.tgz"
-  "version" "6.0.0"
   dependencies:
     "detect-libc" "^1.0.3"
     "expand-template" "^2.0.3"
